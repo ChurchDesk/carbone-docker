@@ -1,0 +1,38 @@
+defaults: &defaults
+  working_directory: ~/carbone-docker
+  docker:
+    - image: circleci/node:8
+      environment:
+        - TZ=Europe/Copenhagen
+
+version: 2.1
+jobs:
+  build-image:
+    docker:
+      - image: circleci/node:8
+    working_directory: ~/carbone-docker
+    steps:
+      - checkout
+      - setup_remote_docker
+      - restore_cache:
+          name: Restore node_modules
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: 'Build docker image and Notify jenkins '
+          command: |
+            environment='production'
+            latestTag='latest'
+
+            echo "Build docker image '$CIRCLE_TAG' ($latestTag) for '$environment'"
+            docker build -t churchdesk/carbone:$latestTag .
+
+            echo "Log in to docker cloud"
+            docker login --username=$DOCKER_CLOUD_USER --password=$DOCKER_CLOUD_PASSWORD
+
+            echo "Push image to docker cloud"
+
+workflows:
+  build-deploy:
+    jobs:
+      - build-image:
+          context: org-global
