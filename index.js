@@ -1,9 +1,9 @@
 const path = require(`path`);
 const fs = require(`fs-extra`);
-const _ = require(`lodash`);
+// const _ = require(`lodash`);
 const util = require(`util`);
 const carbone = require(`carbone`);
-const telejson = require(`telejson`);
+// const telejson = require(`telejson`);
 const express = require(`express`);
 const bodyParser = require(`body-parser`);
 const app = express();
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const render = util.promisify(carbone.render);
 
 // Flagging default formatters to remove custom ones later
-_.forEach(carbone.formatters, formatter => formatter.$isDefault = true);
+// _.forEach(carbone.formatters, formatter => formatter.$isDefault = true);
 
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(`./test.html`));
@@ -28,7 +28,7 @@ app.post('/render', upload.single(`template`), async (req, res) => {
   const originalFormat = template.originalname.split(`.`).reverse()[0];
   let data = req.body.data;
   let options = {};
-  let formatters = {};
+  // let formatters = {};
   try {
     options = JSON.parse(req.body.options);
   } catch (e) {}
@@ -41,14 +41,14 @@ app.post('/render', upload.single(`template`), async (req, res) => {
       data = {};
     }
   }
-  try {
-    formatters = telejson.parse(req.body.formatters);
-  } catch (e) {}
+  // try {
+  //   formatters = telejson.parse(req.body.formatters);
+  // } catch (e) {}
 
-  // Removing previous custom formatters before adding new ones
-  carbone.formatters = _.filter(carbone.formatters, formatter => formatter.$isDefault === true);
+  // // Removing previous custom formatters before adding new ones
+  // carbone.formatters = _.filter(carbone.formatters, formatter => formatter.$isDefault === true);
 
-  carbone.addFormatters(formatters);
+  // carbone.addFormatters(formatters);
 
   let report = null;
 
@@ -70,3 +70,5 @@ app.post('/render', upload.single(`template`), async (req, res) => {
 });
 
 app.listen(port, () => console.log(`Carbone wrapper listenning on port ${port}!`));
+
+console.log(carbone.formatters);
