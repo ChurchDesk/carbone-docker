@@ -30,6 +30,7 @@ jobs:
             docker login --username=$DOCKER_CLOUD_USER --password=$DOCKER_CLOUD_PASSWORD
 
             echo "Push image to docker cloud"
+            docker push churchdesk/carbone:$latestTag
 
 workflows:
   build-deploy:
