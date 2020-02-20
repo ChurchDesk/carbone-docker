@@ -34,7 +34,8 @@ jobs:
 
       - name: Push image
         run: |
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+          REPO_NAME=churchdesk/carbone-docker
+          IMAGE_ID=docker.pkg.github.com/${{ REPO_NAME }}/$IMAGE_NAME
 
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')

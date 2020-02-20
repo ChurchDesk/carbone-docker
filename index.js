@@ -18,6 +18,10 @@ const render = util.promisify(carbone.render);
 // Flagging default formatters to remove custom ones later
 // _.forEach(carbone.formatters, formatter => formatter.$isDefault = true);
 
+app.get('/ping', (req, res) => {
+  res.json('OK');
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(`./test.html`));
 });
@@ -69,4 +73,4 @@ app.post('/render', upload.single(`template`), async (req, res) => {
   return res.send(report);
 });
 
-app.listen(port, () => console.log(`Carbone wrapper listenning on port ${port}!`));
+app.listen(port, () => console.log(`Carbone wrapper listening on port ${port}!`));
